@@ -20,6 +20,31 @@ const Image: React.FC = () => {
     }
   };
 
+
+  // to download
+  const handleDownload = () => {
+    if (imageFile) {
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(imageFile);
+      img.style.filter = filterStyle;
+
+      // Create a canvas to get the data URL of the image
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      img.onload = () => {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        if (ctx) {
+          ctx.drawImage(img, 0, 0);
+          const link = document.createElement("a");
+          link.href = canvas.toDataURL("image/png");
+          link.download = "filtered-image.png";
+          link.click();
+        }
+      };
+    }
+  };
   // Render the image if imageFile is set
   const renderImage = () => {
     if (imageFile) {
@@ -54,11 +79,17 @@ const Image: React.FC = () => {
           hidden
         />
       </div>
-      <div>
+      <div className="flex gap-2 flex-col" >
         {/* Enabled only when image is uploaded and present */}
-        <button disabled={!imageFile} className="bg-blue-800 px-5 py-2 font-normal rounded-md w-full">
+        <button disabled={!imageFile} onClick={handleDownload} className="bg-blue-800 cursor-pointer hover:bg-blue-900 px-5 py-2 font-normal rounded-md w-full">
           Download Image
         </button>
+        <button disabled={!imageFile}  onClick={()=>{
+            setImageFile(null)
+        }} className="bg-red-800 hover:bg-red-900 cursor-pointer px-5 py-2 font-normal rounded-md w-full">
+          Discard Image
+        </button>
+        
       </div>
     </div>
   );
