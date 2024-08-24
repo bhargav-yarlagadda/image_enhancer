@@ -4,7 +4,7 @@ import CustomSlider from "./Slider";
 
 const CustomFilter: React.FC = () => {
   const { customFilter, setCustomFilter } = useContext(FilterContext);
-
+  
   const handleSliderChange = (field: string) => (value: number) => {
     setCustomFilter((prevFilter) => ({
       ...prevFilter,
